@@ -15,7 +15,7 @@ module.exports = {
   getRoomModel: (user_a) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT room_id_uniq, username, photo, user_b, id_room FROM auth JOIN room_chat ON auth.user_id = room_chat.user_b WHERE user_a = ?",
+        "SELECT room_id_uniq, username, photo, phone_number, bio, user_b, id_room FROM auth JOIN room_chat ON auth.user_id = room_chat.user_b WHERE user_a = ?",
         [user_a],
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error));
