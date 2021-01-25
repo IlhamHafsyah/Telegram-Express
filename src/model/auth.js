@@ -18,13 +18,11 @@ module.exports = {
     });
   },
   loginModel: (email) => {
-    console.log("jalan");
     return new Promise((resolve, reject) => {
       connection.query(
         "SELECT user_id, username, email, password, status FROM auth WHERE email = ?",
         email,
         (error, result) => {
-          console.log(error);
           !error ? resolve(result) : reject(new Error(error));
         }
       );

@@ -31,6 +31,7 @@ module.exports = {
           password,
           checkingData[0].password
         );
+        console.log(checkingPassword);
         if (checkingPassword) {
           const { user_id, username, email, status } = checkingData[0];
           const payload = {
