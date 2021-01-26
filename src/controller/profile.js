@@ -21,26 +21,30 @@ module.exports = {
           bio,
           location,
         } = req.body;
+        if (username == "") {
+          return helper.response(res, 404, `Username cannot be empty !`);
+        } else {
+          const setData = {
+            username,
+            // email,
+            // password: encryptPassword,
+            photo: req.file === undefined ? checkingPhoto : req.file.filename,
+            phone_number,
+            bio,
+            location,
+            updated_at: new Date(),
+          };
+          const result = await editProfileModel(setData, id);
+          console.log(result);
+          return helper.response(
+            res,
+            200,
+            `Success update profile by id: ${id}`,
+            result
+          );
+        }
         // const salt = bcrypt.genSaltSync(10);
         // const encryptPassword = bcrypt.hashSync(password, salt);
-        const setData = {
-          username,
-          // email,
-          // password: encryptPassword,
-          photo: req.file === undefined ? checkingPhoto : req.file.filename,
-          phone_number,
-          bio,
-          location,
-          updated_at: new Date(),
-        };
-        const result = await editProfileModel(setData, id);
-        console.log(result);
-        return helper.response(
-          res,
-          200,
-          `Success update profile by id: ${id}`,
-          result
-        );
       } else {
         return helper.response(res, 404, `User by Id ${id} not found !`);
       }

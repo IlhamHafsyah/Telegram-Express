@@ -30,8 +30,19 @@ module.exports = {
   getFriendListModel: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT auth.user_id, username, photo FROM auth JOIN friend ON auth.email = friend.friend_email WHERE friend.user_id = ?",
+        "SELECT auth.user_id, username, photo, friend_email FROM auth JOIN friend ON auth.email = friend.friend_email WHERE friend.user_id = ?",
         id,
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error));
+        }
+      );
+    });
+  },
+  deleteFriendModel: (user_id, friend_email) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "DELETE FROM friend WHERE user_id = ? AND friend_email = ?",
+        [user_id, friend_email],
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error));
         }
