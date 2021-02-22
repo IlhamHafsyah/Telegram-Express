@@ -20,7 +20,7 @@ module.exports = {
   getMessageModel: (id_room) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT username, message FROM chat JOIN auth ON chat.sender_id = auth.user_id WHERE id_room = ?",
+        "SELECT username, sender_id, message FROM chat JOIN auth ON chat.sender_id = auth.user_id WHERE id_room = ?",
         [id_room],
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error));

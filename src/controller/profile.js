@@ -68,6 +68,7 @@ module.exports = {
         return helper.response(res, 404, `User by Id ${id} not found !`);
       }
     } catch (error) {
+      console.log(error);
       return helper.response(res, 400, "Bad Request", error);
     }
   },
