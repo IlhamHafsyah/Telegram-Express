@@ -1,7 +1,7 @@
+const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
-const cors = require("cors");
 const routerNavigation = require("./src/routesNavigation");
 require("dotenv").config();
 
@@ -34,27 +34,19 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("chatMessage", data);
   });
   socket.on("joinRoom", (data) => {
-    // console.log(data);
+    console.log(data);
     socket.join(data.room);
-    socket.broadcast.emit("chatMessage", {
-      username: "BOT",
-      message: `${data.username} Joined Chat !`,
-    });
   });
   socket.on("roomMessage", (data) => {
-    // console.log(data);
+    console.log(data);
     io.to(data.room).emit("chatMessage", data);
   });
   socket.on("typing", (data) => {
     socket.broadcast.to(data.room).emit("typingMessage", data);
   });
   socket.on("changeRoom", (data) => {
-    // console.log(data);
+    console.log(data);
     socket.leave(data.oldroom);
-    socket.broadcast.emit("chatMessage", {
-      username: "BOT",
-      message: `${data.username} left Chat !`,
-    });
     socket.join(data.room);
   });
 });

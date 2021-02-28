@@ -9,7 +9,6 @@ const {
 module.exports = {
   addFriend: async (req, res) => {
     try {
-      // const { id } = req.params;
       const { user_id, friend_email } = req.body;
       const setData = {
         user_id,

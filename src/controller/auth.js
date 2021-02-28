@@ -1,7 +1,13 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const helper = require("../helper/response");
-const { registerModel, loginModel } = require("../model/auth");
+const {
+  registerModel,
+  loginModel,
+  getStatusModel,
+  onStatusModel,
+  logoutModel,
+} = require("../model/auth");
 
 module.exports = {
   register: async (req, res) => {
@@ -31,8 +37,10 @@ module.exports = {
           password,
           checkingData[0].password
         );
-        console.log(checkingPassword);
         if (checkingPassword) {
+          console.log(req.body.email);
+          const onStatus = await onStatusModel(req.body.email);
+          console.log(onStatus);
           const { user_id, username, email, status } = checkingData[0];
           const payload = {
             user_id,
@@ -50,6 +58,30 @@ module.exports = {
       } else {
         return helper.response(res, 400, "Email not registered !");
       }
+    } catch (error) {
+      console.log(error);
+      return helper.response(res, 400, "Bad Request", error);
+    }
+  },
+  getStatus: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await getStatusModel(id);
+      if (result.length > 0) {
+        return helper.response(res, 200, "Success get Status", result);
+      } else {
+        return helper.response(res, 400, "Not Found !");
+      }
+    } catch (error) {
+      console.log(error);
+      return helper.response(res, 400, "Bad Request", error);
+    }
+  },
+  logout: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const off = await logoutModel(id);
+      return helper.response(res, 200, `Success update status`, off);
     } catch (error) {
       return helper.response(res, 400, "Bad Request", error);
     }
